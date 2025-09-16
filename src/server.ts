@@ -7,6 +7,7 @@ const app = fastify()
 
 app.get('/hello', async () => {
   const tables = await knex('sqlite_schema').select('*')
+  console.log('Calling server: ' + tables);
 
   return tables
 })
