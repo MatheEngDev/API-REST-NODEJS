@@ -9,3 +9,6 @@ export const config = {
 }
 
 export const knex = setupKnex(config)
+
+
+pedro 
