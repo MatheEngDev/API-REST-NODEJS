@@ -1,7 +1,7 @@
 import { knex as setupKnex } from 'knex'
 
 export const config = {
-  client: 'sqlite',
+  client: 'sqlite3',
   connection: {
     filename: './tmp/app.db',
   },
