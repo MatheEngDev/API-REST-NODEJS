@@ -1,16 +1,18 @@
-import fastify from 'fastify'
-import { knex } from './database'
+import fastify from "fastify";
+import { knex } from "./database";
+import { title } from "node:process";
 
-const app = fastify()
+const app = fastify();
 
 // GET, POST, PUT, PATCH, DELETE
 
-app.get('/hello', async () => {
-  const tables = await knex('sqlite_schema').select('*')
-  console.log('Calling server: ' + tables);
+app.get("/hello", async () => {
+  const transactions = await knex("transactions")
+  .where('amount', 1000)
+  .select("*");
 
-  return tables
-})
+  return transactions;
+});
 
 app
 
@@ -18,5 +20,5 @@ app
     port: 3333,
   })
   .then(() => {
-    console.log('HTPP Server Running!')
-  })
+    console.log("HTPP Server Running!");
+  });
