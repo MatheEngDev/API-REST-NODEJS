@@ -23,6 +23,16 @@ export async function transactionsRoutes(app: FastifyInstance) {
     return { transaction };
   });
 
+  app.get("/summary", async () => {
+    const summary = await knex("transactions")
+      .sum("amount", {as: 'amount' })
+      .first(); 
+
+    
+
+    return { summary };
+  });
+
   app.post("/", async (request, reply) => {
     // {title, amount, type: credit ou debit}
 
@@ -36,10 +46,23 @@ export async function transactionsRoutes(app: FastifyInstance) {
       request.body
     );
 
+    let sessionId = request.cookies.sessionid
+
+    if (!sessionId) {
+      sessionId = randomUUID()
+
+      reply.cookie('sessionid', sessionId, {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7,  // 7 days
+        })
+
+    }
+
     await knex("transactions").insert({
       id: randomUUID(),
       title,
       amount: type === "credit" ? amount : amount * -1,
+      session_id: sessionId,
     });
 
     return reply.status(201).send();
