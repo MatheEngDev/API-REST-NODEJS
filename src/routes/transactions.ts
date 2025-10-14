@@ -5,8 +5,18 @@ import { randomUUID } from "node:crypto";
 import tr from "zod/v4/locales/tr.js";
 
 export async function transactionsRoutes(app: FastifyInstance) {
-  app.get("/", async () => {
-    const transactions = await knex("transactions").select();
+  app.get("/", async (request, reply) => {
+    const sessionId = request.cookies.sessionId;
+
+    if (!sessionId) {
+      return reply.status(401).send({
+        error: "Unauthorized.",
+      });
+    }
+
+    const transactions = await knex("transactions")
+      .where("session_id", sessionId)
+      .select();
 
     return { transactions };
   });
@@ -25,10 +35,8 @@ export async function transactionsRoutes(app: FastifyInstance) {
 
   app.get("/summary", async () => {
     const summary = await knex("transactions")
-      .sum("amount", {as: 'amount' })
-      .first(); 
-
-    
+      .sum("amount", { as: "amount" })
+      .first();
 
     return { summary };
   });
@@ -46,16 +54,15 @@ export async function transactionsRoutes(app: FastifyInstance) {
       request.body
     );
 
-    let sessionId = request.cookies.sessionid
+    let sessionId = request.cookies.sessionid;
 
     if (!sessionId) {
-      sessionId = randomUUID()
+      sessionId = randomUUID();
 
-      reply.cookie('sessionid', sessionId, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7,  // 7 days
-        })
-
+      reply.cookie("sessionid", sessionId, {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+      });
     }
 
     await knex("transactions").insert({
