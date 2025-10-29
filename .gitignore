@@ -1,6 +1,7 @@
 node_modules
 db/app.db
 .env
+
  
 # Logs
 logs
@@ -16,6 +17,8 @@ pnpm-debug.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.env.test
+
 
 # Build outputs
 dist/
