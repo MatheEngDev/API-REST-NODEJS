@@ -1,6 +1,8 @@
+# Dependencies
 node_modules
-db/app.db
-.env
+
+# Database
+db/*.db
 
  
 # Logs
@@ -24,6 +26,7 @@ pnpm-debug.log*
 dist/
 build/
 coverage/
+build
 
 # OS / Editor
 .DS_Store
