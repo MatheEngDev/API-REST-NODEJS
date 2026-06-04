@@ -17,7 +17,7 @@ describe("Check-in Use Case", () => {
   beforeEach(async () => {
     checkInsRepository = new inMemorycheckInsRepository();
     gymsRepository = new InmemoryGymsRepository();
-    sut = new CheckInUseCase(checkInsRepository, gymsRepository as any);
+    sut = new CheckInUseCase(checkInsRepository, gymsRepository);
 
   
       

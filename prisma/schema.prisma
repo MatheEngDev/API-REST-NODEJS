@@ -26,9 +26,9 @@ model User {
 }
 
 model CheckIn {
-  id          String    @id @default(uuid())
+  id         String    @id @default(uuid())
   created_at  DateTime  @default(now())
-  valdated_at DateTime?
+  validated_at DateTime?
 
   user    User @relation(fields: [user_id], references: [id])
   user_id Int

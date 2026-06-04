@@ -11,7 +11,8 @@ let sut: GetUserMetricsUserCase;
 describe("get user metrics Use Case", () => {
   beforeEach(async () => {
     checkInsRepository = new inMemorycheckInsRepository();
-    sut = new GetUserMetricsUserCase(checkInsRepository);
+    // cast to any to accommodate the in-memory repo shape differences from the production interface
+    sut = new GetUserMetricsUserCase(checkInsRepository as any);
   });
 
   it("should be able to get check-ins count from metrics", async () => {
