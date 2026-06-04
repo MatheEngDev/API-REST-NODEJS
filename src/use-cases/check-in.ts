@@ -1,4 +1,3 @@
-import { use } from "react";
 import { CheckIn } from "../generated/prisma";
 import { CheckInsRepository } from "../repositories/check-ins-repository";
 import { GymsRepository } from "../repositories/gyms-repository";
@@ -6,6 +5,7 @@ import { getDistanceBetweenCoordinates } from "../utils/get-distance-between-coo
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 import { MaxNumberOfCheckInsError } from "./errors/max-number-of-check-ins-error";
 import { MaxDistanceError } from "./errors/max-distance-error";
+import { number } from "zod";
 
 interface CheckInUseCaseRequest {
   userId: string;

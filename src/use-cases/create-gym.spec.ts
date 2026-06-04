@@ -22,6 +22,6 @@ describe("create gym Use Case", () => {
       longitude: -46.6424028,
     });
 
-    expect(gym.id).toEqual(expect.any(Number));
+    expect(gym.id).toEqual(expect.any(String));
   });
 });

@@ -40,19 +40,19 @@ describe("Check-in Use Case", () => {
   it("should be able to Check in", async () => {
     const { checkIn } = await sut.execute({
       gymId: "gym-01",
-      userId: "user-01",
+      userId: "1",
       userLatitude: -23.6447814,
       userLongitude: -46.6424028,
     });
 
-    expect(checkIn.id).toEqual(expect.any(Number));
+    expect(checkIn.id).toEqual(expect.any(String));
   });
 
   it("should not be able to Check in twice on the same day", async () => {
     vi.setSystemTime(new Date(2022, 0, 20, 8, 0, 0));
     await sut.execute({
       gymId: "gym-01",
-      userId: "user-01",
+      userId: "1",
       userLongitude: -46.6424028,
       userLatitude: -23.6447814,
     });
@@ -60,7 +60,7 @@ describe("Check-in Use Case", () => {
     await expect(() =>
       sut.execute({
         gymId: "gym-01",
-        userId: "user-01",
+        userId: "1",
         userLongitude: -46.6424028,
         userLatitude: -23.6447814,
       }),
@@ -71,7 +71,7 @@ describe("Check-in Use Case", () => {
     vi.setSystemTime(new Date(2022, 0, 20, 8, 0, 0));
     await sut.execute({
       gymId: "gym-01",
-      userId: "user-01",
+      userId: "1",
       userLongitude: -46.6424028,
       userLatitude: -23.6447814,
     });
@@ -80,7 +80,7 @@ describe("Check-in Use Case", () => {
 
     const { checkIn } = await sut.execute({
       gymId: "gym-01",
-      userId: "user-01",
+      userId: "1",
       userLongitude: -46.6424028,
       userLatitude: -23.6447814,
     });
@@ -103,7 +103,7 @@ describe("Check-in Use Case", () => {
     await expect(() =>
       sut.execute({
         gymId: "gym-02",
-        userId: "user-01",
+        userId: "1",
         userLongitude: -46.6424028,
         userLatitude: -23.6447814,
       }),
