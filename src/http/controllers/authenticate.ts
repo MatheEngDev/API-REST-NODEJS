@@ -3,8 +3,10 @@ import type { FastifyReply, FastifyRequest } from "fastify";
 import { InvalidCredentialsError } from "../../use-cases/errors/invalid-credentials-error";
 import { makeAuthenticateUseCase } from "../../use-cases/factories/make-authenticate-use-case";
 
-
-export async function authenticate(request: FastifyRequest, reply: FastifyReply) {
+export async function authenticate(
+  request: FastifyRequest,
+  reply: FastifyReply,
+) {
   const authenticatebodyschema = z.object({
     email: z.email(),
     password: z.string().min(6),
@@ -12,24 +14,31 @@ export async function authenticate(request: FastifyRequest, reply: FastifyReply)
 
   // SOLID - D - principio da inversão de dependência
 
-  
   const { email, password } = authenticatebodyschema.parse(request.body);
 
   try {
     const authenticateUseCase = makeAuthenticateUseCase();
 
-    await authenticateUseCase.execute({
+    const { user } = await authenticateUseCase.execute({
       email,
       password,
     });
+
+    const token = await reply.jwtSign(
+      {},
+      {
+        sign: {
+          sub: String(user.id),
+        },
+      },
+    );
+    return reply.status(200).send({
+      token,
+    });
   } catch (error) {
-
-    if ( error instanceof InvalidCredentialsError){
-    return reply.status(400).send({message: 'E-mail already exists'});
+    if (error instanceof InvalidCredentialsError) {
+      return reply.status(400).send({ message: "E-mail already exists" });
     }
-   throw error
+    throw error;
   }
-
-
-  return reply.status(200).send();
 }
