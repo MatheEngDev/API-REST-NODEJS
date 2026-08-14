@@ -4,7 +4,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { before } from "node:test";
 import { randomUUID } from "node:crypto";
 
-describe("Register Controller", () => {
+describe("Register (e2e)", () => {
 
   beforeAll(async () => {
     await app.ready()
