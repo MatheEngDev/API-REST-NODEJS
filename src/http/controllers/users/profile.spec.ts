@@ -1,7 +1,7 @@
 import request from "supertest";
 import { app } from "../../../app";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { randomUUID } from "node:crypto";
+import { createAndAuthenticateUser } from "@/use-cases/create-and-authenticate-user";
 
 describe("profile (e2e)", () => {
   beforeAll(async () => {
@@ -13,18 +13,7 @@ describe("profile (e2e)", () => {
   });
 
   it("should be able to get user profile", async () => {
-    await request(app.server).post("/users").send({
-      name: "Matheus",
-      email: "matheus@gmail.com",
-      password: "123456",
-    });
-
-    const authResponse = await request(app.server).post("/sessions").send({
-      email: "matheus@gmail.com",
-      password: "123456",
-    });
-
-    const { token } = authResponse.body;
+    const { token } = await createAndAuthenticateUser(app);
 
     const profileResponse = await request(app.server)
       .get("/me")
@@ -33,7 +22,9 @@ describe("profile (e2e)", () => {
 
     expect(profileResponse.statusCode).toEqual(200);
     expect(profileResponse.body.user).toEqual(
-      expect.objectContaining({ email: "matheus@gmail.com" }),
+      expect.objectContaining({
+        email: "matheus@gmail.com",
+      }),
     );
   });
 });

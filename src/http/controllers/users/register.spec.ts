@@ -1,7 +1,6 @@
 import request from "supertest";
 import { app } from "../../../app";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { before } from "node:test";
 import { randomUUID } from "node:crypto";
 
 describe("Register (e2e)", () => {
